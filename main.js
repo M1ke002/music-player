@@ -116,8 +116,7 @@ const app = {
     },
     renderSong: function() {
         const htmls = this.songs.map(function(song, index) {
-            const isActiveSong = index === app.currSongIndex ? " active" : "";
-            return `<div class="song${isActiveSong}" index="${index}">
+            return `<div class="song" index="${index}">
             <div class="thumbnail" style="background-image: url(${song.image})"></div>
             <div class="detail">
                 <h3 class="name">${song.name}</h3>
@@ -137,7 +136,16 @@ const app = {
         currSongName.innerHTML = song.name;
         currSongThumbnail.style["background-image"] = `url(${song.image})`;
         audio.src = song.path;
-        this.renderSong();
+        // remove the previously active song (if any)
+        const activeSong = document.querySelector(".song.active");
+        if (activeSong)
+            activeSong.classList.remove("active");
+        // add the active class to the currently active song
+        const songs = Array.from(document.querySelectorAll(".song"));
+        const currSong = songs.find(function(song) {
+            return app.currSongIndex === Number(song.getAttribute("index"));
+        })
+        currSong.classList.add("active");
         this.scrollToActiveSong();
     },
     nextSong: function() {
@@ -396,6 +404,6 @@ app.start();
  * 4. save curr settings -- done
  * 5. progressBar color --done
  * 6. dark mode --done
- * 7. fix not have to render all songs again
+ * 7. fix not have to render all songs again --done
  */
  
