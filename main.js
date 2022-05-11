@@ -17,6 +17,8 @@ const endTime = document.getElementById("end-time");
 const volumeBtn = document.querySelector(".volume .volume-btn");
 const darkModeBtn = document.querySelector(".dark-mode-btn");
 const darkModeIcon = darkModeBtn.querySelector("img");
+const downloadModalOverlay = document.querySelector(".download-modal .overlay");
+const downloadModalBtn = document.getElementById("download-song-btn");
 
 const MUSIC_PLAYER_KEY = "music-player";
 
@@ -348,7 +350,8 @@ const app = {
         playList.onclick = function(e) {
             // if clicked on option (3 dots)
             if (e.target.closest(".option")) {
-                console.log("option clicked");
+                downloadModalOverlay.classList.add("active");
+                downloadModalBtn.style.transform = "translateY(0)";
             } else {
                 // if click on a song (not including active song)
                 const songClicked = e.target.closest(".song:not(.active)")
@@ -385,6 +388,19 @@ const app = {
             darkModeIcon.src = src;
             app.changeConfig("enableDarkMode",app.enableDarkMode);
         }
+
+        // when user clicks on overlay
+        downloadModalOverlay.onclick = function() {
+            downloadModalOverlay.classList.remove("active");
+            downloadModalBtn.style.transform = "translateY(50px)";
+        }
+
+        // when user clicks on download button
+        downloadModalBtn.onclick = function() {
+            console.log("Music downloaded")
+            downloadModalOverlay.classList.remove("active");
+            downloadModalBtn.style.transform = "translateY(50px)";
+        }
     },
     start: function() {
         this.loadConfig();
@@ -405,5 +421,6 @@ app.start();
  * 5. progressBar color --done
  * 6. dark mode --done
  * 7. fix not have to render all songs again --done
+ * 8. add download song --partly done
  */
  
